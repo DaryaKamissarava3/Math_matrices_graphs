@@ -3,12 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <title>Math</title>
+  <link rel="stylesheet" href="src/styles/style.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
 </head>
 <body>
-<select>
-  <option>matrix-1</option>
-  <option>matrix-2</option>
+<label for="select">Выберите алгоритм:</label>
+<select id="select" name="select">
+  <option value="hide">Скрыто</option>
+  <option value="adjacency-matrix">Матрица смежности</option>
+  <option value="weighted-graph">Поиск ратчайшего пути в графе</option>
 </select>
-<script src="src/first.js"></script>
+<div id="adjacency-matrix" class="adjacency-matrix">
+  <div id="adjacency-matrix-block" class="adjacency-matrix-block">
+    <div class="matrix-title">Матрица смежности</div>
+    <span>Введите количество строк</span>
+    <select id="adjacency-matrix-row">
+      <option value="3">3</option>
+      <option value="4" selected> 4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    <br>
+    <span>Введите количество колонок</span>
+    <select id="adjacency-matrix-col">
+      <option value="3">3</option>
+      <option value="4" selected> 4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    <br>
+    <button id="btn-show-adjacency-matrix" class="btn-show-matrix">Вывести матрицу</button>
+  </div>
+</div>
+
+<div id="weighted-graph" class="weighted-graph">
+  <div id="weighted-graph-block" class="weighted-graph-block">
+    <div class="matrix-title">Взвешенный граф</div>
+    <select id="weighted-graph-row">
+      <option value="3">3</option>
+      <option value="4" selected> 4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    <br>
+    <button id="btn-show-weighted-graph" class="btn-show-matrix">Вывести матрицу</button>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<script type="module" src="src/js/secondMatrix.js"></script>
+<script type="module" src="src/js/firstMatrix.js"></script>
 </body>
 </html>

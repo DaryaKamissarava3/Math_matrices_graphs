@@ -1,0 +1,96 @@
+#mynetwork {
+  width: 50%;
+  height: 300px;
+  border: 1px solid lightgray;
+  margin: 0 auto;
+}
+
+body {
+  margin: 0;
+  font-family: "PT Sans", sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+p {
+  margin: 0 0 10px 0;
+}
+
+input {
+  width: 40px;
+  height: 30px;
+}
+
+.btn {
+  width: 90px;
+  height: 30px;
+}
+
+.adjacency-matrix {
+  display: none;
+  width: 100%;
+  background-color: #e6ecfa;
+  color: #000000;
+}
+
+.adjacency-matrix-block {
+  display: block;
+  text-align: center;
+}
+
+.weighted-graph-block {
+  display: block;
+  text-align: center;
+}
+
+.matrix-title {
+  padding: 20px 0;
+  font-size: 30px;
+}
+
+.matrix-field {
+  padding: 30px 0;
+}
+
+.matrix-label-X {
+  width: 45px;
+  height: 20px;
+  display: inline-block;
+}
+
+.matrix-label-X-2 {
+  width: 45px;
+  height: 20px;
+  display: inline-block;
+}
+
+.matrix-input {
+  margin: 2px;
+}
+
+.weighted-graph {
+  display: none;
+  background-color: #eac4ab;
+  color: white;
+  width: 100%;
+  height: 800px;
+}
+
+.matrix-field-2 {
+  margin-left: 40px;
+}
