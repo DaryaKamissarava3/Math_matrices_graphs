@@ -194,7 +194,7 @@ function dijkstraAlgorithm(startPoint, endPoint, matrix, showLog = false) {
   }
 
   while (true) {
-    nodes[currentPoint].forEach(function (node, index) {
+    nodes[currentPoint].forEach(function (node) {
       if (!distanceWeight[node[0]].visited) {
 
         if (distanceWeight[node[0]].weight > node[1] + distanceWeight[currentPoint].weight) {

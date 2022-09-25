@@ -41,12 +41,10 @@ function createStartPointY() {
   const startPointY = document.createElement("select");
   startPointY.id = "select-start-point-y";
   for (let i = 0; i < matrix1Row.value; i++) {
-    let count = 0;
     const option = document.createElement("option");
     option.id = "start-y-point";
     option.value = `${i}`;
     option.text = `${i}`;
-    count++;
     startPointY.appendChild(option);
   }
   divForStartPointY.appendChild(startPointY);
@@ -60,12 +58,10 @@ function createEndPointY() {
   const endPointY = document.createElement("select");
   endPointY.id = "select-end-point-Y";
   for (let i = 0; i < matrix1Row.value; i++) {
-    let count = 0;
     const option = document.createElement("option");
     option.id = "end-y-point";
     option.value = `${i}`;
     option.text = `${i}`;
-    count++;
     endPointY.appendChild(option);
   }
   divForEndPointY.appendChild(endPointY);

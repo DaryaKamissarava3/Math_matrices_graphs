@@ -5,12 +5,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prettier": "prettier --write ./src",
-    "lint:check": "npm run prettier"
+    "lint:check": "npm run prettier",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "eslint": "^8.24.0",
     "prettier": "2.7.1"
   }
 }

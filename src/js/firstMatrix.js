@@ -154,39 +154,31 @@ function showShortestPath() {
 
     const rowNumber = [-1, 0, 1, 0];
     const colNumber = [0, 1, 0, -1];
-    const nodeProto = (row, col, dist = 0) => {
-      return {row, col, dist};
+    const pointProto = (row, col, distance = 0) => {
+      return {row, col, distance};
     };
-    let q = [];
+    let queue = [];
     let visitedNode = new Set();
 
-    exit.dist = 0;
-    q.push(exit);
+    exit.distance = 0;
+    queue.push(exit);
 
-    while (q.length > 0) {
-      let node = q.shift();
+    while (queue.length > 0) {
+      let node = queue.shift();
       if (isEqual(node, finalPoint)) {
-        return node.dist;
+        return node.distance;
       }
 
       for (let i = 0; i < 4; i++) {
         let row = rowNumber[i] + node.row;
         let col = colNumber[i] + node.col;
-        if (
-          row < 0 ||
-          row > arrayFromMatrix.length - 1 ||
-          col < 0 ||
-          col > arrayFromMatrix[0].length - 1
-        ) {
+        if (row < 0 || row > arrayFromMatrix.length - 1 || col < 0 || col > arrayFromMatrix[0].length - 1) {
           continue;
         }
-        let _node = nodeProto(row, col, node.dist + 1);
-        if (
-          arrayFromMatrix[row][col] === 1 &&
-          !visitedNode.has(_node.row.toString() + _node.col.toString())
-        ) {
+        let _node = pointProto(row, col, node.distance + 1);
+        if (arrayFromMatrix[row][col] === 1 && !visitedNode.has(_node.row.toString() + _node.col.toString())) {
           visitedNode.add(_node.row.toString() + _node.col.toString());
-          q.push(_node);
+          queue.push(_node);
         }
       }
     }
@@ -200,7 +192,7 @@ function showShortestPath() {
   document.querySelector(".answer").innerHTML = findShortestPath(
     arrayFromMatrix,
     {row: startPointY, col: startPointX},
-    {row: endPointY, col: endPointX }
+    {row: endPointY, col: endPointX}
   );
 }
 
