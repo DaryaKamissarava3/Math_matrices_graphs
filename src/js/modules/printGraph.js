@@ -20,7 +20,7 @@ function paintGraph(g, groups = []) {
     }
     visited[i] = 1;
   }
-  const container = document.getElementById("mynetwork");
+  const container = document.getElementById("canvasForPrint");
   let data = {
     nodes: nodes,
     edges: edges,

@@ -1,36 +1,36 @@
 import {paintGraph} from "./modules/printGraph.js";
 
-const btnShowMatrix2 = document.getElementById("btn-show-weighted-graph");
-const matrix2Row = document.getElementById("weighted-graph-row");
-const matrix2Block = document.getElementById("weighted-graph-block");
+const btnShowWeightedGraph = document.getElementById("btn-show-weighted-graph");
+const weightedGraphRow = document.getElementById("weighted-graph-row");
+const matrixBlockForGraph = document.getElementById("weighted-graph-block");
 
-btnShowMatrix2.addEventListener("click", showInformation2);
+btnShowWeightedGraph.addEventListener("click", showGraphContent);
 
-function showInformation2() {
-  let containerWithElements = document.getElementById("matrix-field-2");
+function showGraphContent() {
+  let containerWithElements = document.getElementById("weighted-graph-matrix");
   if (!containerWithElements) {
-    showMatrix2();
+    showMatrixForGraph();
     createCanvas();
-    showResultButton2();
+    createButtonWithGraphResult();
     return;
   }
   containerWithElements.remove();
-  let fieldWithCanvas = document.getElementById("mynetwork");
-  let resultBtn = document.getElementById("btn-show-result-2");
+  let fieldWithCanvas = document.getElementById("canvasForPrint");
+  let resultBtn = document.getElementById("btn-show-graph-result");
   resultBtn.remove();
   fieldWithCanvas.remove();
-  showMatrix2();
+  showMatrixForGraph();
   createCanvas();
-  showResultButton2();
+  createButtonWithGraphResult();
 }
 
 function createEndPoint() {
-  const matrixField2 = document.getElementById("matrix-field-2");
+  const weightedGraphMatrix = document.getElementById("weighted-graph-matrix");
   const divEndPoint = document.createElement("div");
-  divEndPoint.textContent = "Enter end point ";
+  divEndPoint.textContent = "Введите конечную точку ";
   const endPoint = document.createElement("select");
   endPoint.id = "select-end";
-  for (let i = 0; i < matrix2Row.value; i++) {
+  for (let i = 0; i < weightedGraphRow.value; i++) {
     const option = document.createElement("option");
     option.id = "end";
     option.value = `${i}`;
@@ -38,16 +38,16 @@ function createEndPoint() {
     endPoint.appendChild(option);
   }
   divEndPoint.appendChild(endPoint);
-  matrixField2.appendChild(divEndPoint);
+  weightedGraphMatrix.appendChild(divEndPoint);
 }
 
 function createStartPoint() {
-  const matrixField2 = document.getElementById("matrix-field-2");
+  const weightedGraphMatrix = document.getElementById("weighted-graph-matrix");
   const divStartPoint = document.createElement("div");
   divStartPoint.textContent = "Введите начальную точку ";
   const startPoint = document.createElement("select");
   startPoint.id = "select-start";
-  for (let i = 0; i < matrix2Row.value; i++) {
+  for (let i = 0; i < weightedGraphRow.value; i++) {
     const option = document.createElement("option");
     option.id = "start";
     option.value = `${i}`;
@@ -55,7 +55,7 @@ function createStartPoint() {
     startPoint.appendChild(option);
   }
   divStartPoint.appendChild(startPoint);
-  matrixField2.appendChild(divStartPoint);
+  weightedGraphMatrix.appendChild(divStartPoint);
 }
 
 function getStartValue() {
@@ -68,55 +68,55 @@ function getEndValue() {
   return selectStartValue.value;
 }
 
-function showResultButton2() {
+function createButtonWithGraphResult() {
   const resultButton = document.createElement("button");
-  resultButton.id = "btn-show-result-2";
+  resultButton.id = "btn-show-graph-result";
   resultButton.className = "btn-show-result";
   resultButton.textContent = "Вывести результат";
-  matrix2Block.appendChild(resultButton);
+  matrixBlockForGraph.appendChild(resultButton);
   resultButton.addEventListener("click", shortestPathInGraph);
 }
 
 function fieldWithAnswer() {
   const resultDiv = document.createElement("div");
   resultDiv.textContent = "Кратчайший путь равен:";
+  resultDiv.id='result-of-graph';
   const resultSpan = document.createElement("span");
-  resultSpan.id = "answer-2";
-  resultSpan.className = "answer-2";
+  resultSpan.id = "answer-for-graph";
+  resultSpan.className = "answer-for-graph";
   resultDiv.appendChild(resultSpan);
-  matrix2Block.appendChild(resultDiv);
+  matrixBlockForGraph.appendChild(resultDiv);
 }
 
 function shortestPathInGraph() {
-  fieldWithAnswer();
-  let arr = [].map.call(
-    document.querySelectorAll(".inputBlock-2"),
+  let arrFromMatrix = [].map.call(
+    document.querySelectorAll(".inputBlock-in-matrix"),
     function (block) {
       return [].map.call(
-        block.querySelectorAll(".matrix-input-2"),
-        function (inp) {
-          return Number(inp.value);
+        block.querySelectorAll(".graph-matrix-input"),
+        function (input) {
+          return Number(input.value);
         }
       );
     }
   );
 
-  if (checkMatrixForSymmetry(arr)===false){
+  if (checkMatrixForSymmetry(arrFromMatrix)===false){
     invalidMatrix();
+    fieldWithAnswer();
   }else {
-    console.log("///////////eeee");
-    console.log(arr);
-    paintGraph(arr);
+    paintGraph(arrFromMatrix);
     let start = Number(getStartValue());
     let end = Number(getEndValue());
-    dijkstra(start, end, arr, true);
+    fieldWithAnswer();
+    dijkstraAlgorithm(start, end, arrFromMatrix, true);
   }
 }
 function invalidMatrix(){
   const divIfInvalidMatrix=document.createElement('div');
   divIfInvalidMatrix.id='invalidMatrix';
   divIfInvalidMatrix.textContent='Матрица не симметрична, попробуйте ещё раз'
-  const block=document.getElementById('matrix-field-2');
+  const block=document.getElementById('weighted-graph-matrix');
   block.appendChild(divIfInvalidMatrix);
 }
 
@@ -132,77 +132,58 @@ function checkMatrixForSymmetry(matrix){
 
 function createCanvas() {
   let divWithCanvas = document.createElement("div");
-  divWithCanvas.id = "mynetwork";
-  divWithCanvas.className = "mynetwork";
-  matrix2Block.appendChild(divWithCanvas);
+  divWithCanvas.id = "canvasForPrint";
+  divWithCanvas.className = "canvasForPrint";
+  matrixBlockForGraph.appendChild(divWithCanvas);
 }
 
-function showMatrix2() {
-  const textNode = document.createTextNode("The matrix must be symmetrical");
-
-  const matrixField2 = document.createElement("div");
-  matrixField2.id = "matrix-field-2";
-  matrix2Block.appendChild(matrixField2);
-  matrixField2.appendChild(textNode);
+function showMatrixForGraph() {
+  const textNode = document.createTextNode("Матрица должна быть симметричной");
+  const matrixWeightedGraph = document.createElement("div");
+  matrixWeightedGraph.id = "weighted-graph-matrix";
+  matrixBlockForGraph.appendChild(matrixWeightedGraph);
+  matrixWeightedGraph.appendChild(textNode);
   const divForLabelsX2 = document.createElement("div");
-  for (let i = 0; i < matrix2Row.value; i++) {
+  for (let i = 0; i < weightedGraphRow.value; i++) {
     const labelsForMatrix2 = document.createElement("span");
     labelsForMatrix2.id = "matrix-label-X-2";
     labelsForMatrix2.className = "matrix-label-X-2";
     labelsForMatrix2.textContent = `${i}`;
     divForLabelsX2.appendChild(labelsForMatrix2);
   }
-  matrixField2.appendChild(divForLabelsX2);
+  matrixWeightedGraph.appendChild(divForLabelsX2);
 
-  for (let i = 0; i < matrix2Row.value; i++) {
+  for (let i = 0; i < weightedGraphRow.value; i++) {
     let inputBlock = document.createElement("div");
-    inputBlock.className = "inputBlock-2";
+    inputBlock.className = "inputBlock-in-matrix";
     let matrixLabel = document.createElement("span");
     matrixLabel.innerHTML = `${i}`;
     inputBlock.appendChild(matrixLabel);
 
-    for (let j = 0; j < matrix2Row.value; j++) {
+    for (let j = 0; j < weightedGraphRow.value; j++) {
       let newInput = document.createElement("input");
-      newInput.className = "matrix-input-2";
+      newInput.className = "graph-matrix-input";
       inputBlock.appendChild(newInput);
     }
-    matrixField2.appendChild(inputBlock);
+    matrixWeightedGraph.appendChild(inputBlock);
   }
   createStartPoint();
   createEndPoint();
 }
 
-function dijkstra(a, b, matrix, showLog = false) {
-  if (showLog) {
-    console.log(
-      `| Finding the shortest path |\n - Startpoint: ${a}\n - Endpoint: ${b}`
-    );
-  }
-
-  // Check that startpoint and endpoint are in distance matrix if not return null
-  if (a < 0 || b < 0 || a >= matrix.length || b >= matrix.length) {
-    if (showLog) {
-      console.log(`Error, Check arguments`);
-    }
-    return null;
-  }
-
-  // Define variables
+function dijkstraAlgorithm(startPoint, endPoint, matrix, showLog = false) {
   let nodes = [[]];
-  let currentNode = a;
-  let nextNode = [null, Infinity];
-  let distanceCosts = [];
+  let currentPoint = startPoint;
+  let nextPoint = [null, Infinity];
+  let distanceWeight = [];
 
-  // Create object array based on the distance matrix
   for (let i = 0; i < matrix.length; i++) {
-    distanceCosts[i] = {know: false, cost: Infinity, path: null, route: []};
+    distanceWeight[i] = {visited: false, weight: Infinity, path: null, route: []};
   }
 
-  // Set the start node know state to true and cost to zero
-  distanceCosts[currentNode].know = true;
-  distanceCosts[currentNode].cost = 0;
+  distanceWeight[currentPoint].visited = true;
+  distanceWeight[currentPoint].weight = 0;
 
-  // Find all the connected nodes and add their indexes and costs to array
   for (let i = 0; i < matrix.length; i++) {
     if (i !== 0) nodes.push([]);
     for (let j = 0; j < matrix.length; j++) {
@@ -213,101 +194,81 @@ function dijkstra(a, b, matrix, showLog = false) {
   }
 
   while (true) {
-    // Go through all the nodes that are connected to current node
-    nodes[currentNode].forEach(function (node, index) {
-      if (!distanceCosts[node[0]].know) {
-        if (
-          distanceCosts[node[0]].cost >
-          node[1] + distanceCosts[currentNode].cost
-        ) {
-          // Set the current lowest cost
-          distanceCosts[node[0]].cost =
-            node[1] + distanceCosts[currentNode].cost;
-          distanceCosts[node[0]].path = currentNode;
-        } else if (nextNode[1] > node[1] + distanceCosts[currentNode].cost) {
-          // Change node to continue path
-          nextNode[0] = node[0];
-          nextNode[1] = node[1] + distanceCosts[currentNode].cost;
+    nodes[currentPoint].forEach(function (node, index) {
+      if (!distanceWeight[node[0]].visited) {
+
+        if (distanceWeight[node[0]].weight > node[1] + distanceWeight[currentPoint].weight) {
+          distanceWeight[node[0]].weight = node[1] + distanceWeight[currentPoint].weight;
+          distanceWeight[node[0]].path = currentPoint;
+        } else if (nextPoint[1] > node[1] + distanceWeight[currentPoint].weight) {
+          nextPoint[0] = node[0];
+          nextPoint[1] = node[1] + distanceWeight[currentPoint].weight;
         }
       }
     });
 
-    // If the all nodes that are connected to current node are visited. Then found new lowest cost node to be continue
-    if (nextNode[0] == null) {
-      for (let i = 0; i < distanceCosts.length; i++) {
-        if (!distanceCosts[i].know) {
+    if (nextPoint[0] == null) {
+      for (let i = 0; i < distanceWeight.length; i++) {
+        if (!distanceWeight[i].visited) {
           let tempNode = [null, Infinity];
 
-          for (let i = 0; i < distanceCosts.length; i++) {
+          for (let i = 0; i < distanceWeight.length; i++) {
             if (
-              !distanceCosts[i].know &&
-              distanceCosts[i].cost !== Infinity &&
-              distanceCosts[i].cost < tempNode[1]
+              !distanceWeight[i].visited &&
+              distanceWeight[i].weight !== Infinity &&
+              distanceWeight[i].weight < tempNode[1]
             ) {
-              // Set the new found node index and cost
               tempNode[0] = i;
-              tempNode[1] = distanceCosts[i].cost;
+              tempNode[1] = distanceWeight[i].weight;
             }
           }
           if (tempNode[0] != null) {
-            distanceCosts[tempNode[0]].know = true;
-            nextNode[0] = tempNode[0];
+            distanceWeight[tempNode[0]].visited = true;
+            nextPoint[0] = tempNode[0];
             break;
           }
         }
       }
 
-      // If all nodes have been visited and no new nodes are found.
-      if (nextNode[0] == null) {
-        // Collect all the node paths to create route arrays
-        for (let i = 0; i < distanceCosts.length; i++) {
+      if (nextPoint[0] == null) {
+        for (let i = 0; i < distanceWeight.length; i++) {
           let x = 0;
-
-          if (!(distanceCosts[i].path == null)) {
-            // Add the current node index number to route array
-            distanceCosts[i].route.push(i);
-            x = distanceCosts[i].path;
-
-            // Collect all paths and add them to route array
-            while (!(distanceCosts[x].path == null)) {
-              distanceCosts[i].route.push(x);
-              x = distanceCosts[x].path;
+          if (!(distanceWeight[i].path == null)) {
+            distanceWeight[i].route.push(i);
+            x = distanceWeight[i].path;
+            while (!(distanceWeight[x].path == null)) {
+              distanceWeight[i].route.push(x);
+              x = distanceWeight[x].path;
             }
-            // Add the last node index number to route array and reverse array
-            distanceCosts[i].route.push(x);
-            distanceCosts[i].route.reverse();
+            distanceWeight[i].route.push(x);
+            distanceWeight[i].route.reverse();
           }
         }
 
         if (showLog) {
-          let costs = distanceCosts[b].cost;
-          let route = distanceCosts[b].route;
+          let result = distanceWeight[endPoint].weight;
+          let route = distanceWeight[endPoint].route;
           if (route.length !== 0) {
-            console.log(
-              `\nThe shortest path is through ${route} points and costs ${costs}`
-            );
-            document.querySelector(".answer-2").innerHTML = costs;
+            document.querySelector(".answer-for-graph").innerHTML = result;
           } else {
-            console.log(`\nNo path was found between points ${a} and ${b}`);
+            noWayInGraph(startPoint,endPoint);
           }
         }
-
-        // Return the completed distance costs and paths object array
-        return distanceCosts;
+        return distanceWeight;
       }
     }
-
-    // Update current shortests path and cost to object array
-    if (nextNode[1] < distanceCosts[nextNode[0]].cost) {
-      distanceCosts[nextNode[0]].cost = nextNode[1];
-      distanceCosts[nextNode[0]].path = currentNode;
+    if (nextPoint[1] < distanceWeight[nextPoint[0]].weight) {
+      distanceWeight[nextPoint[0]].weight = nextPoint[1];
+      distanceWeight[nextPoint[0]].path = currentPoint;
     }
-
-    // Change the current node and continue loop
-    currentNode = nextNode[0];
-    distanceCosts[currentNode].know = true;
-    nextNode = [null, Infinity];
+    currentPoint = nextPoint[0];
+    distanceWeight[currentPoint].visited = true;
+    nextPoint = [null, Infinity];
   }
 }
-
-//взвешенный граф
+function noWayInGraph(start,end){
+  const divWithFalseAnswer=document.createElement('div');
+  divWithFalseAnswer.textContent=`Нет пути между точками ${start} и ${end}`;
+  const block=document.getElementById('weighted-graph-block');
+  block.appendChild(divWithFalseAnswer);
+}

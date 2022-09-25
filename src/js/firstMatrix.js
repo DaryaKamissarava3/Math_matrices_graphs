@@ -135,45 +135,33 @@ function showShortestPath() {
     }
   );
 
-  function findShortestPath(labyrinth, departure, finalPoint) {
-    const checkNode = (node) => {
-      return !(
-        !node ||
-        !Number.isInteger(node.row) ||
-        node.row < 0 ||
-        !Number.isInteger(node.col) ||
-        node.col < 0
-      );
+  function findShortestPath(labyrinth, exit, finalPoint) {
+    const checkNode = (point) => {
+      return !(!point || !Number.isInteger(point.row) || point.row < 0 || !Number.isInteger(point.col) || point.col < 0);
     };
 
-    if (
-      !labyrinth ||
-      !Array.isArray(labyrinth) ||
-      !Array.isArray(labyrinth[0]) ||
-      !checkNode(departure) ||
-      !checkNode(finalPoint)
-    ) {
-      return NaN;
+    if (!labyrinth || !Array.isArray(labyrinth) || !Array.isArray(labyrinth[0]) || !checkNode(exit) || !checkNode(finalPoint)) {
+      return null;
     }
 
-    const isEqual = (node1, node2) => {
-      return node1.row === node2.row && node1.col === node2.col;
+    const isEqual = (point1, point2) => {
+      return point1.row === point2.row && point1.col === point2.col;
     };
 
-    if (isEqual(departure, finalPoint)) {
+    if (isEqual(exit, finalPoint)) {
       return 0;
     }
 
-    const rowNum = [-1, 0, 1, 0];
-    const colNum = [0, 1, 0, -1];
+    const rowNumber = [-1, 0, 1, 0];
+    const colNumber = [0, 1, 0, -1];
     const nodeProto = (row, col, dist = 0) => {
       return {row, col, dist};
     };
     let q = [];
     let visitedNode = new Set();
 
-    departure.dist = 0;
-    q.push(departure);
+    exit.dist = 0;
+    q.push(exit);
 
     while (q.length > 0) {
       let node = q.shift();
@@ -182,8 +170,8 @@ function showShortestPath() {
       }
 
       for (let i = 0; i < 4; i++) {
-        let row = rowNum[i] + node.row;
-        let col = colNum[i] + node.col;
+        let row = rowNumber[i] + node.row;
+        let col = colNumber[i] + node.col;
         if (
           row < 0 ||
           row > arrayFromMatrix.length - 1 ||
@@ -212,10 +200,7 @@ function showShortestPath() {
   document.querySelector(".answer").innerHTML = findShortestPath(
     arrayFromMatrix,
     {row: startPointY, col: startPointX},
-    {
-      row: endPointY,
-      col: endPointX,
-    }
+    {row: endPointY, col: endPointX }
   );
 }
 
