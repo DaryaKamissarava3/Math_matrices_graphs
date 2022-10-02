@@ -93,6 +93,7 @@ function showResultButton() {
 
 function createFieldWithAnswer() {
   const divForResult = document.createElement("div");
+  divForResult.id = 'divWithResult';
   divForResult.textContent = "Кратчайший путь равняется:";
   const spanWithResult = document.createElement("span");
   spanWithResult.id = "answer";
@@ -122,6 +123,15 @@ function getValueOfEndPointY() {
 }
 
 function showShortestPath() {
+  const divWithResult = document.getElementById('divWithResult');
+  if (!divWithResult) {
+    resultOfSearch();
+  }
+  divWithResult.remove();
+  resultOfSearch();
+}
+
+function resultOfSearch() {
   createFieldWithAnswer();
   let arrayFromMatrix = [].map.call(
     document.querySelectorAll(".inputBlock"),

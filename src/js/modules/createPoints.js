@@ -1,4 +1,4 @@
-import { matrix1Row, matrix1Col } from "../firstMatrix.js";
+import { matrix1Row, matrix1Col } from "../adjacency-matrix.js";
 
 function createStartPointX() {
   const matrixField = document.getElementById("matrix-field");

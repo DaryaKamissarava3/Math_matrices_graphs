@@ -80,7 +80,7 @@ function createButtonWithGraphResult() {
 function fieldWithAnswer() {
   const resultDiv = document.createElement("div");
   resultDiv.textContent = "Кратчайший путь равен:";
-  resultDiv.id='result-of-graph';
+  resultDiv.id = 'result-of-graph';
   const resultSpan = document.createElement("span");
   resultSpan.id = "answer-for-graph";
   resultSpan.className = "answer-for-graph";
@@ -101,28 +101,35 @@ function shortestPathInGraph() {
     }
   );
 
-  if (checkMatrixForSymmetry(arrFromMatrix)===false){
+  const divWithResult = document.getElementById('result-of-graph');
+  if (checkMatrixForSymmetry(arrFromMatrix) === false) {
     invalidMatrix();
-    fieldWithAnswer();
-  }else {
+  } else {
     paintGraph(arrFromMatrix);
     let start = Number(getStartValue());
     let end = Number(getEndValue());
-    fieldWithAnswer();
-    dijkstraAlgorithm(start, end, arrFromMatrix, true);
+    if (!divWithResult) {
+      fieldWithAnswer();
+      dijkstraAlgorithm(start, end, arrFromMatrix, true);
+    } else {
+      divWithResult.remove();
+      fieldWithAnswer();
+      dijkstraAlgorithm(start, end, arrFromMatrix, true);
+    }
   }
 }
-function invalidMatrix(){
-  const divIfInvalidMatrix=document.createElement('div');
-  divIfInvalidMatrix.id='invalidMatrix';
-  divIfInvalidMatrix.textContent='Матрица не симметрична, попробуйте ещё раз'
-  const block=document.getElementById('weighted-graph-matrix');
+
+function invalidMatrix() {
+  const divIfInvalidMatrix = document.createElement('div');
+  divIfInvalidMatrix.id = 'invalidMatrix';
+  divIfInvalidMatrix.textContent = 'Матрица не симметрична, попробуйте ещё раз'
+  const block = document.getElementById('weighted-graph-matrix');
   block.appendChild(divIfInvalidMatrix);
 }
 
-function checkMatrixForSymmetry(matrix){
-  for(let i=0;i<matrix.length;i++){
-    for (let j=0;j<matrix.length;j++){
+function checkMatrixForSymmetry(matrix) {
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix.length; j++) {
       if (matrix[i][j] !== matrix[j][i])
         return false;
     }
@@ -251,7 +258,7 @@ function dijkstraAlgorithm(startPoint, endPoint, matrix, showLog = false) {
           if (route.length !== 0) {
             document.querySelector(".answer-for-graph").innerHTML = result;
           } else {
-            noWayInGraph(startPoint,endPoint);
+            noWayInGraph(startPoint, endPoint);
           }
         }
         return distanceWeight;
@@ -266,9 +273,10 @@ function dijkstraAlgorithm(startPoint, endPoint, matrix, showLog = false) {
     nextPoint = [null, Infinity];
   }
 }
-function noWayInGraph(start,end){
-  const divWithFalseAnswer=document.createElement('div');
-  divWithFalseAnswer.textContent=`Нет пути между точками ${start} и ${end}`;
-  const block=document.getElementById('weighted-graph-block');
+
+function noWayInGraph(start, end) {
+  const divWithFalseAnswer = document.createElement('div');
+  divWithFalseAnswer.textContent = `Нет пути между точками ${start} и ${end}`;
+  const block = document.getElementById('weighted-graph-block');
   block.appendChild(divWithFalseAnswer);
 }
